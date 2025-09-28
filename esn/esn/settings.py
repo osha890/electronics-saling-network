@@ -22,8 +22,8 @@ env = environ.Env(
     DEBUG=(bool, False),
 )
 
-dotenv_file = os.path.join(BASE_DIR, ".env")
-dotenv_template = os.path.join(BASE_DIR, ".env.template")
+dotenv_file = os.path.join(BASE_DIR.parent, ".env")
+dotenv_template = os.path.join(BASE_DIR.parent, ".env.template")
 
 if os.path.exists(dotenv_file):
     environ.Env.read_env(dotenv_file)
