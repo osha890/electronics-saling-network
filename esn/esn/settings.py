@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "contacts.apps.ContactsConfig",
     "products.apps.ProductsConfig",
+    "network.apps.NetworkConfig",
 ]
 
 MIDDLEWARE = [
