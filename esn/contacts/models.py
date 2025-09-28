@@ -16,7 +16,12 @@ class Address(models.Model):
 
 class Contact(models.Model):
     email = models.EmailField()
-    address = models.OneToOneField(Address, on_delete=models.CASCADE)
+    address = models.OneToOneField(
+        Address,
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+    )
 
     def __str__(self):
         return f"{self.email}, {self.address}"
