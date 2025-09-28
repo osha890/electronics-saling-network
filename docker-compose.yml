@@ -1,0 +1,18 @@
+services:
+
+  pg:
+    image: postgres
+    env_file:
+      - ./.env
+      - ./.env.template
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    ports:
+      - "${POSTGRES_PORT}:5432"
+
+  adminer:
+    image: adminer
+    ports:
+      - "8080:8080"
