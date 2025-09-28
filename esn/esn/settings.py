@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     "contacts.apps.ContactsConfig",
     "products.apps.ProductsConfig",
     "network.apps.NetworkConfig",
+    "employees.apps.EmployeesConfig",
 ]
 
 MIDDLEWARE = [
