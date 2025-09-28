@@ -1,3 +1,8 @@
 from django.contrib import admin
 
-# Register your models here.
+from network.models import NetworkNode
+
+
+@admin.register(NetworkNode)
+class NetworkNodeAdmin(admin.ModelAdmin):
+    list_display = ("name", "type")
