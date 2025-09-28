@@ -24,4 +24,4 @@ class Contact(models.Model):
     )
 
     def __str__(self):
-        return f"{self.email}, {self.address}"
+        return f"Contact ID {self.pk}"

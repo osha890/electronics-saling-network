@@ -17,4 +17,4 @@ class Employee(models.Model):
     )
 
     def __str__(self):
-        return f"{self.user} {self.network_node}"
+        return f"Employee ID {self.pk}"

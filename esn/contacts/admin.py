@@ -10,6 +10,7 @@ class AddressAdmin(admin.ModelAdmin):
 
 @admin.register(Contact)
 class ContactAdmin(admin.ModelAdmin):
+    list_display = ("email", "address")
 
     def get_queryset(self, request):
         qs = super().get_queryset(request)
