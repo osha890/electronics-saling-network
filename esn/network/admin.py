@@ -1,8 +1,16 @@
-from django.contrib import admin
+from django.contrib import admin, messages
 from django.urls import reverse
 from django.utils.html import format_html
 
 from network.models import NetworkNode
+
+
+@admin.action(description="Clear dept")
+def clear_debt(modeladmin, request, queryset):
+    updated = queryset.update(debt_to_supplier=0)
+    modeladmin.message_user(
+        request, f"{updated} objects have debt cleared", messages.SUCCESS
+    )
 
 
 @admin.register(NetworkNode)
@@ -16,6 +24,7 @@ class NetworkNodeAdmin(admin.ModelAdmin):
     )
     raw_id_fields = ("supplier",)
     list_filter = ("contact__address__city",)
+    actions = [clear_debt]
 
     def get_queryset(self, request):
         qs = super().get_queryset(request)
