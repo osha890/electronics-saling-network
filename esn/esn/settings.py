@@ -129,8 +129,13 @@ STATIC_URL = "static/"
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
+REST_FRAMEWORK = {}
+
 if DEBUG:
-    INSTALLED_APPS += ["debug_toolbar"]
+    INSTALLED_APPS += [
+        "debug_toolbar",
+        "drf_spectacular",
+    ]
     MIDDLEWARE += ["debug_toolbar.middleware.DebugToolbarMiddleware"]
     INTERNAL_IPS = [
         "127.0.0.1",
@@ -138,3 +143,5 @@ if DEBUG:
     ]
 
     AUTH_PASSWORD_VALIDATORS = []
+
+    REST_FRAMEWORK["DEFAULT_SCHEMA_CLASS"] = "drf_spectacular.openapi.AutoSchema"
