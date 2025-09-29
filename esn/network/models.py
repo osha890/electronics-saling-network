@@ -49,6 +49,8 @@ class NetworkNode(models.Model):
             raise ValidationError("A Factory cannot have a supplier.")
         if self.supplier is None and self.debt_to_supplier != 0:
             raise ValidationError("Debt to supplier must be 0 if there is no supplier.")
+        if self.supplier == self:
+            raise ValidationError("A node can't be it's own supplier.")
 
     def save(self, *args, **kwargs):
         self.full_clean()
