@@ -1,5 +1,7 @@
+from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import viewsets
 
+from network.filters import NetworkNodeFilter
 from network.models import NetworkNode
 from network.serializers import NetworkNodeOutputSerializer
 
@@ -11,3 +13,6 @@ class NetworkNodeReadOnlyViewSet(viewsets.ReadOnlyModelViewSet):
         .all()
     )
     serializer_class = NetworkNodeOutputSerializer
+
+    filter_backends = [DjangoFilterBackend]
+    filterset_class = NetworkNodeFilter
