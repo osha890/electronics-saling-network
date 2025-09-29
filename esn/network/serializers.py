@@ -1,14 +1,14 @@
 from rest_framework import serializers
 
-from contacts.serializers import ContactOutputSerializer
+from contacts.serializers import ContactSerializer
 from network.models import NetworkNode
 from products.models import Product
-from products.serializers import ProductOutputSerializer
+from products.serializers import ProductSerializer
 
 
 class NetworkNodeOutputSerializer(serializers.ModelSerializer):
-    contact = ContactOutputSerializer()
-    products = ProductOutputSerializer(many=True)
+    contact = ContactSerializer()
+    products = ProductSerializer(many=True)
 
     class Meta:
         model = NetworkNode

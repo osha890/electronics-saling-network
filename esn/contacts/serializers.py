@@ -3,7 +3,7 @@ from rest_framework import serializers
 from contacts.models import Address, Contact
 
 
-class AddressOutputSerializer(serializers.ModelSerializer):
+class AddressSerializer(serializers.ModelSerializer):
     class Meta:
         model = Address
         fields = [
@@ -14,8 +14,8 @@ class AddressOutputSerializer(serializers.ModelSerializer):
         ]
 
 
-class ContactOutputSerializer(serializers.ModelSerializer):
-    address = AddressOutputSerializer()
+class ContactSerializer(serializers.ModelSerializer):
+    address = AddressSerializer()
 
     class Meta:
         model = Contact

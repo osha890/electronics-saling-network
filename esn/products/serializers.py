@@ -3,7 +3,7 @@ from rest_framework import serializers
 from products.models import Product
 
 
-class ProductOutputSerializer(serializers.ModelSerializer):
+class ProductSerializer(serializers.ModelSerializer):
     class Meta:
         model = Product
         fields = [
@@ -11,4 +11,7 @@ class ProductOutputSerializer(serializers.ModelSerializer):
             "name",
             "model",
             "release_date",
+        ]
+        read_only_fields = [
+            "id",
         ]
