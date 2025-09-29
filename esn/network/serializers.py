@@ -2,6 +2,7 @@ from rest_framework import serializers
 
 from contacts.serializers import ContactOutputSerializer
 from network.models import NetworkNode
+from products.models import Product
 from products.serializers import ProductOutputSerializer
 
 
@@ -20,4 +21,20 @@ class NetworkNodeOutputSerializer(serializers.ModelSerializer):
             "supplier",
             "debt_to_supplier",
             "created_at",
+        ]
+
+
+class NetworkNodeInputSerializer(serializers.ModelSerializer):
+    products = serializers.PrimaryKeyRelatedField(
+        queryset=Product.objects.all(),
+        many=True,
+    )
+
+    class Meta:
+        model = NetworkNode
+        fields = [
+            "name",
+            "type",
+            "products",
+            "supplier",
         ]
