@@ -1,10 +1,10 @@
 from django.urls import path
 from rest_framework.routers import DefaultRouter
 
-from network.views import NetworkNodeHighDebtView, NetworkNodeReadOnlyViewSet
+from network.views import NetworkNodeHighDebtView, NetworkNodeViewSet
 
 router = DefaultRouter()
-router.register(r"network_nodes", NetworkNodeReadOnlyViewSet, basename="network_node")
+router.register(r"network_nodes", NetworkNodeViewSet, basename="network_node")
 
 urlpatterns = [
     path(
