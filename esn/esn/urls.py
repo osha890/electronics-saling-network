@@ -5,8 +5,15 @@ from drf_spectacular.views import SpectacularAPIView, SpectacularSwaggerView
 
 urlpatterns = [
     path("admin/", admin.site.urls),
-    path("api/", include("network.urls")),
-    path("api/", include("products.urls")),
+    path(
+        "api/",
+        include(
+            [
+                path("network_nodes/", include("network.urls")),
+                path("products/", include("products.urls")),
+            ]
+        ),
+    ),
 ]
 
 if settings.DEBUG:

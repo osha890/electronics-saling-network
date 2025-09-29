@@ -1,5 +1,6 @@
 from django.db.models import Avg
 from django_filters.rest_framework import DjangoFilterBackend
+from drf_spectacular.utils import extend_schema
 from rest_framework import generics, status, viewsets
 from rest_framework.response import Response
 
@@ -8,6 +9,7 @@ from network.models import NetworkNode
 from network.serializers import NetworkNodeInputSerializer, NetworkNodeOutputSerializer
 
 
+@extend_schema(tags=["Network Nodes"])
 class NetworkNodeViewSet(viewsets.ModelViewSet):
     queryset = (
         NetworkNode.objects.select_related("contact", "contact__address", "supplier")
@@ -47,6 +49,7 @@ class NetworkNodeViewSet(viewsets.ModelViewSet):
         return Response(output_serializer.data)
 
 
+@extend_schema(tags=["Network Nodes"])
 class NetworkNodeHighDebtView(generics.ListAPIView):
     queryset = NetworkNode.objects.all()
     serializer_class = NetworkNodeOutputSerializer
