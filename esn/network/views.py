@@ -4,6 +4,7 @@ from drf_spectacular.utils import extend_schema
 from rest_framework import generics, status, viewsets
 from rest_framework.response import Response
 
+from employees.models import Employee
 from network.filters import NetworkNodeFilter
 from network.models import NetworkNode
 from network.serializers import NetworkNodeInputSerializer, NetworkNodeOutputSerializer
@@ -11,14 +12,29 @@ from network.serializers import NetworkNodeInputSerializer, NetworkNodeOutputSer
 
 @extend_schema(tags=["Network Nodes"])
 class NetworkNodeViewSet(viewsets.ModelViewSet):
-    queryset = (
-        NetworkNode.objects.select_related("contact", "contact__address", "supplier")
-        .prefetch_related("products")
-        .all()
-    )
-
     filter_backends = [DjangoFilterBackend]
     filterset_class = NetworkNodeFilter
+
+    def get_queryset(self):
+        user = self.request.user
+
+        qs = (
+            NetworkNode.objects.select_related(
+                "contact", "contact__address", "supplier"
+            )
+            .prefetch_related("products")
+            .all()
+        )
+
+        if user.is_superuser:
+            return qs
+
+        try:
+            employee = user.employee
+        except Employee.DoesNotExist:
+            return qs.none()
+
+        return qs.filter(pk=employee.network_node_id)
 
     def get_serializer_class(self):
         if self.action in ["create", "update", "partial_update"]:
@@ -53,6 +69,21 @@ class NetworkNodeViewSet(viewsets.ModelViewSet):
 class NetworkNodeHighDebtView(generics.ListAPIView):
     queryset = NetworkNode.objects.all()
     serializer_class = NetworkNodeOutputSerializer
+
+    def get_queryset(self):
+        user = self.request.user
+
+        qs = NetworkNode.objects.all()
+
+        if user.is_superuser:
+            return qs
+
+        try:
+            employee = user.employee
+        except Employee.DoesNotExist:
+            return qs.none()
+
+        return qs.filter(pk=employee.network_node_id)
 
     def list(self, request, *args, **kwargs):
         avg_debt = NetworkNode.objects.exclude(
