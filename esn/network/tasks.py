@@ -1,5 +1,4 @@
 import random
-import time
 
 from celery import shared_task
 from django.db import transaction
@@ -31,7 +30,7 @@ def decrease_debt_to_supplier():
 
 
 @shared_task
-def clear_debt(ids):
+def clear_debt(ids: list):
     queryset = NetworkNode.objects.filter(id__in=ids)
     updated = queryset.update(debt_to_supplier=0)
     return f"{updated} objects have debt cleared"
