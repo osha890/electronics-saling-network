@@ -11,6 +11,7 @@ urlpatterns = [
             [
                 path("network_nodes/", include("network.urls")),
                 path("products/", include("products.urls")),
+                path("contacts/", include("contacts.urls")),
             ]
         ),
     ),
