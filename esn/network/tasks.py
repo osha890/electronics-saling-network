@@ -1,0 +1,17 @@
+import random
+
+from celery import shared_task
+from django.db import transaction
+from django.utils import timezone
+
+from network.models import NetworkNode
+
+
+@shared_task
+def increase_debt_to_supplier():
+    network_nodes = list(NetworkNode.objects.exclude(supplier=None))
+    for node in network_nodes:
+        node.debt_to_supplier += random.randint(5, 500)
+    with transaction.atomic():
+        NetworkNode.objects.bulk_update(network_nodes, ["debt_to_supplier"])
+    return f"Updated {len(network_nodes)} network nodes at {timezone.now()}"

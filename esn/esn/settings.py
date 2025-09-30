@@ -1,4 +1,5 @@
 import os
+from datetime import timedelta
 from pathlib import Path
 
 import environ
@@ -140,6 +141,13 @@ REST_FRAMEWORK = {
 
 CELERY_BROKER_URL = f"amqp://{env("RABBITMQ_USER")}:{env("RABBITMQ_PASSWORD")}@{env("RABBITMQ_HOST")}:{env("RABBITMQ_PORT")}//"
 
+
+CELERY_BEAT_SCHEDULE = {
+    "increase_debt_to_supplier-every-3-hours": {
+        "task": "network.tasks.increase_debt_to_supplier",
+        "schedule": timedelta(hours=3),
+    },
+}
 
 if DEBUG:
     INSTALLED_APPS += [
