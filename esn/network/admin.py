@@ -3,14 +3,27 @@ from django.urls import reverse
 from django.utils.html import format_html
 
 from network.models import NetworkNode
+from network.tasks import clear_debt as clear_debt_task
 
 
 @admin.action(description="Clear dept")
 def clear_debt(modeladmin, request, queryset):
-    updated = queryset.update(debt_to_supplier=0)
-    modeladmin.message_user(
-        request, f"{updated} objects have debt cleared", messages.SUCCESS
-    )
+    count = queryset.count()
+    if count > 20:
+        ids = list(queryset.values_list("id", flat=True))
+        clear_debt_task.delay(ids)
+        modeladmin.message_user(
+            request,
+            f"Debt clearing task for {count} objects has been scheduled asynchronously.",
+            messages.WARNING,
+        )
+    else:
+        updated = queryset.update(debt_to_supplier=0)
+        modeladmin.message_user(
+            request,
+            f"{updated} objects have debt cleared",
+            messages.SUCCESS,
+        )
 
 
 @admin.register(NetworkNode)

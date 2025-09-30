@@ -1,4 +1,5 @@
 import random
+import time
 
 from celery import shared_task
 from django.db import transaction
@@ -27,3 +28,10 @@ def decrease_debt_to_supplier():
     with transaction.atomic():
         NetworkNode.objects.bulk_update(network_nodes, ["debt_to_supplier"])
     return f"Updated {len(network_nodes)} network nodes at {timezone.now()}"
+
+
+@shared_task
+def clear_debt(ids):
+    queryset = NetworkNode.objects.filter(id__in=ids)
+    updated = queryset.update(debt_to_supplier=0)
+    return f"{updated} objects have debt cleared"
