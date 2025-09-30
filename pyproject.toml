@@ -14,6 +14,8 @@ dependencies = [
     "djangorestframework (>=3.16.1,<4.0.0)",
     "django-filter (>=25.1,<26.0)",
     "celery (>=5.5.3,<6.0.0)",
+    "qrcode (>=8.2,<9.0)",
+    "pillow (>=11.3.0,<12.0.0)",
 ]
 
 
