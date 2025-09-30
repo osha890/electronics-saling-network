@@ -15,3 +15,15 @@ def increase_debt_to_supplier():
     with transaction.atomic():
         NetworkNode.objects.bulk_update(network_nodes, ["debt_to_supplier"])
     return f"Updated {len(network_nodes)} network nodes at {timezone.now()}"
+
+
+@shared_task
+def decrease_debt_to_supplier():
+    network_nodes = list(NetworkNode.objects.exclude(supplier=None))
+    for node in network_nodes:
+        node.debt_to_supplier -= random.randint(100, 10_000)
+        if node.debt_to_supplier < 0:
+            node.debt_to_supplier = 0
+    with transaction.atomic():
+        NetworkNode.objects.bulk_update(network_nodes, ["debt_to_supplier"])
+    return f"Updated {len(network_nodes)} network nodes at {timezone.now()}"

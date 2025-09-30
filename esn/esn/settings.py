@@ -3,6 +3,7 @@ from datetime import timedelta
 from pathlib import Path
 
 import environ
+from celery.schedules import crontab
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -146,6 +147,10 @@ CELERY_BEAT_SCHEDULE = {
     "increase_debt_to_supplier-every-3-hours": {
         "task": "network.tasks.increase_debt_to_supplier",
         "schedule": timedelta(hours=3),
+    },
+    "decrease_debt_to_supplier-every-day-in-6-30": {
+        "task": "network.tasks.decrease_debt_to_supplier",
+        "schedule": crontab(minute=30, hour=6),
     },
 }
 
