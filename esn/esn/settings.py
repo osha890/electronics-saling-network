@@ -138,6 +138,9 @@ REST_FRAMEWORK = {
     ],
 }
 
+CELERY_BROKER_URL = f"amqp://{env("RABBITMQ_USER")}:{env("RABBITMQ_PASSWORD")}@{env("RABBITMQ_HOST")}:{env("RABBITMQ_PORT")}//"
+
+
 if DEBUG:
     INSTALLED_APPS += [
         "debug_toolbar",
