@@ -23,3 +23,7 @@ class ContactSerializer(serializers.ModelSerializer):
             "email",
             "address",
         ]
+
+
+class ContactQrRequestSerializer(serializers.Serializer):
+    node_id = serializers.IntegerField()
