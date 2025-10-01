@@ -5,7 +5,6 @@ from django.core.exceptions import ValidationError
 from django.core.management.base import BaseCommand
 from faker import Faker
 
-from contacts.models import Address, Contact
 from network.choices import NetworkNodeType
 from network.models import NetworkNode
 from products.models import Product

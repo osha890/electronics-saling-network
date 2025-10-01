@@ -2,7 +2,6 @@ from django.core.exceptions import ValidationError
 from django.core.validators import MinValueValidator
 from django.db import models
 
-from contacts.models import Contact
 from network.choices import NetworkNodeType
 from products.models import Product
 

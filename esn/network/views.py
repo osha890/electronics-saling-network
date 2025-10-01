@@ -5,7 +5,6 @@ from rest_framework import generics, status, viewsets
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from contacts.serializers import ContactQrRequestSerializer
 from employees.models import Employee
 from network.filters import NetworkNodeFilter
 from network.models import NetworkNode

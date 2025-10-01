@@ -1,7 +1,6 @@
 from django.core.exceptions import ValidationError as DjangoValidationError
 from rest_framework import serializers
 
-from contacts.serializers import ContactSerializer
 from network.models import NetworkNode
 from products.models import Product
 from products.serializers import ProductSerializer
