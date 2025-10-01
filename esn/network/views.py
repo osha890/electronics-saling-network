@@ -19,9 +19,7 @@ class NetworkNodeViewSet(viewsets.ModelViewSet):
         user = self.request.user
 
         qs = (
-            NetworkNode.objects.select_related(
-                "contact", "contact__address", "supplier"
-            )
+            NetworkNode.objects.select_related("supplier")
             .prefetch_related("products")
             .all()
         )
