@@ -8,6 +8,14 @@ from products.models import Product
 
 
 class NetworkNode(models.Model):
+    hierarchy = [
+        NetworkNodeType.FACTORY,
+        NetworkNodeType.DISTRIBUTOR,
+        NetworkNodeType.DEALER_CENTER,
+        NetworkNodeType.RETAIL_CHAIN,
+        NetworkNodeType.ENTREPRENEUR,
+    ]
+
     name = models.CharField(max_length=255)
 
     type = models.CharField(max_length=20, choices=NetworkNodeType.choices)
@@ -49,8 +57,13 @@ class NetworkNode(models.Model):
             raise ValidationError("A Factory cannot have a supplier.")
         if self.supplier is None and self.debt_to_supplier != 0:
             raise ValidationError("Debt to supplier must be 0 if there is no supplier.")
-        if self.supplier == self:
-            raise ValidationError("A node can't be it's own supplier.")
+        if self.supplier:
+            self_index = self.hierarchy.index(self.type)
+            supplier_index = self.hierarchy.index(self.supplier.type)
+            if supplier_index >= self_index:
+                raise ValidationError(
+                    f"A {self.supplier.get_type_display()} can't be a supplier of a {self.get_type_display()}."
+                )
 
     def save(self, *args, **kwargs):
         self.full_clean()
