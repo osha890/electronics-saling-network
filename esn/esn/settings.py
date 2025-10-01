@@ -46,6 +46,8 @@ INSTALLED_APPS = [
     "products.apps.ProductsConfig",
     "network.apps.NetworkConfig",
     "employees.apps.EmployeesConfig",
+    "rest_framework",
+    "rest_framework.authtoken",
 ]
 
 MIDDLEWARE = [
@@ -136,6 +138,9 @@ REST_FRAMEWORK = {
     ],
     "DEFAULT_PERMISSION_CLASSES": [
         "esn.permissions.IsActiveEmployeeOrSuperuser",
+    ],
+    "DEFAULT_AUTHENTICATION_CLASSES": [
+        "rest_framework.authentication.TokenAuthentication",
     ],
 }
 
