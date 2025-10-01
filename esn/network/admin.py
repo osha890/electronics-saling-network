@@ -34,6 +34,7 @@ class NetworkNodeAdmin(admin.ModelAdmin):
         "supplier_link",
         "debt_to_supplier",
         "city",
+        "copy_email_button",
     )
     raw_id_fields = ("supplier",)
     list_filter = ("city",)
@@ -50,3 +51,15 @@ class NetworkNodeAdmin(admin.ModelAdmin):
             url = reverse("admin:network_networknode_change", args=[obj.supplier_id])
             return format_html('<a href="{}">{}</a>', url, obj.supplier.name)
         return "—"
+
+    @admin.display(description="Action")
+    def copy_email_button(self, obj):
+        if obj.email:
+            return format_html(
+                '<button type="button" class="copy-btn" data-email="{}">Copy email</button>',
+                obj.email,
+            )
+        return "No email"
+
+    class Media:
+        js = ("network/js/copy_email.js",)
