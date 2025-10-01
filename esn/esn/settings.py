@@ -46,6 +46,7 @@ INSTALLED_APPS = [
     "products.apps.ProductsConfig",
     "network.apps.NetworkConfig",
     "employees.apps.EmployeesConfig",
+    "custom_auth.apps.CustomAuthConfig",
     "rest_framework",
     "rest_framework.authtoken",
 ]

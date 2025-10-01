@@ -33,4 +33,4 @@ faker = "^37.8.0"
 
 [tool.isort]
 profile = "black"
-known_first_party = ["esn", "products", "network", "employees"]
+known_first_party = ["esn", "products", "network", "employees", "custom_auth"]
