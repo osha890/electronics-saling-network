@@ -83,14 +83,27 @@ WSGI_APPLICATION = "esn.wsgi.application"
 # Database
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
 
+# Local
+# DATABASES = {
+#     "default": {
+#         "ENGINE": "django.db.backends.postgresql",
+#         "NAME": env("POSTGRES_DB"),
+#         "USER": env("POSTGRES_USER"),
+#         "PASSWORD": env("POSTGRES_PASSWORD"),
+#         "HOST": env("POSTGRES_HOST"),
+#         "PORT": env("POSTGRES_PORT"),
+#     }
+# }
+
+# Docker
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.postgresql",
         "NAME": env("POSTGRES_DB"),
         "USER": env("POSTGRES_USER"),
         "PASSWORD": env("POSTGRES_PASSWORD"),
-        "HOST": env("POSTGRES_HOST"),
-        "PORT": env("POSTGRES_PORT"),
+        "HOST": "pg",
+        "PORT": 5432,
     }
 }
 
@@ -145,7 +158,13 @@ REST_FRAMEWORK = {
     ],
 }
 
-CELERY_BROKER_URL = f"amqp://{env("RABBITMQ_USER")}:{env("RABBITMQ_PASSWORD")}@{env("RABBITMQ_HOST")}:{env("RABBITMQ_PORT")}//"
+# Local
+# CELERY_BROKER_URL = f"amqp://{env("RABBITMQ_USER")}:{env("RABBITMQ_PASSWORD")}@{env("RABBITMQ_HOST")}:{env("RABBITMQ_PORT")}//"
+
+# Docker
+CELERY_BROKER_URL = (
+    f"amqp://{env("RABBITMQ_USER")}:{env("RABBITMQ_PASSWORD")}@rabbitmq:5672//"
+)
 
 
 CELERY_BEAT_SCHEDULE = {
