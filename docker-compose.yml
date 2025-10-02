@@ -2,6 +2,7 @@ services:
 
   pg:
     image: postgres
+    container_name: pg
     env_file:
       - ./.env
       - ./.env.template
@@ -14,11 +15,13 @@ services:
 
   adminer:
     image: adminer
+    container_name: adminer
     ports:
       - "8080:8080"
 
   rabbitmq:
     image: rabbitmq:3-management-alpine
+    container_name: rabbitmq
     env_file:
       - ./.env
       - ./.env.template
@@ -31,6 +34,7 @@ services:
 
   django:
     build: .
+    container_name: django
     command: sh -c "cd esn &&
       python manage.py migrate &&
       python manage.py runserver 0.0.0.0:8000"
@@ -41,6 +45,7 @@ services:
 
   celery_worker:
     build: .
+    container_name: celery_worker
     command: celery -A esn.celery worker -l info
     working_dir: /app/esn
     depends_on:
@@ -50,6 +55,7 @@ services:
 
   celery_beat:
     build: .
+    container_name: celery_beat
     command: celery -A esn.celery beat -l info
     working_dir: /app/esn
     depends_on:
