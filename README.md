@@ -1,3 +1,5 @@
+**Switch language:** [English](README.md) | [Русский](README_RU.md)
+
 ## Running with Docker
 
 1. **Create `.env` file**
