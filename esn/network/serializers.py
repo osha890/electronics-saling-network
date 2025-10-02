@@ -1,14 +1,12 @@
 from django.core.exceptions import ValidationError as DjangoValidationError
 from rest_framework import serializers
 
-from contacts.serializers import ContactSerializer
 from network.models import NetworkNode
 from products.models import Product
 from products.serializers import ProductSerializer
 
 
 class NetworkNodeOutputSerializer(serializers.ModelSerializer):
-    contact = ContactSerializer()
     products = ProductSerializer(many=True)
 
     class Meta:
@@ -17,7 +15,11 @@ class NetworkNodeOutputSerializer(serializers.ModelSerializer):
             "id",
             "name",
             "type",
-            "contact",
+            "email",
+            "country",
+            "city",
+            "street",
+            "house_number",
             "products",
             "supplier",
             "debt_to_supplier",
@@ -34,6 +36,7 @@ class NetworkNodeInputSerializer(serializers.ModelSerializer):
     supplier = serializers.PrimaryKeyRelatedField(
         queryset=NetworkNode.objects.all(),
         required=False,
+        allow_null=True,
     )
 
     class Meta:
@@ -41,6 +44,11 @@ class NetworkNodeInputSerializer(serializers.ModelSerializer):
         fields = [
             "name",
             "type",
+            "email",
+            "country",
+            "city",
+            "street",
+            "house_number",
             "products",
             "supplier",
         ]

@@ -3,11 +3,13 @@ from django_filters.rest_framework import DjangoFilterBackend
 from drf_spectacular.utils import extend_schema
 from rest_framework import generics, status, viewsets
 from rest_framework.response import Response
+from rest_framework.views import APIView
 
 from employees.models import Employee
 from network.filters import NetworkNodeFilter
 from network.models import NetworkNode
 from network.serializers import NetworkNodeInputSerializer, NetworkNodeOutputSerializer
+from network.tasks import send_qr_email
 
 
 @extend_schema(tags=["Network Nodes"])
@@ -19,9 +21,7 @@ class NetworkNodeViewSet(viewsets.ModelViewSet):
         user = self.request.user
 
         qs = (
-            NetworkNode.objects.select_related(
-                "contact", "contact__address", "supplier"
-            )
+            NetworkNode.objects.select_related("supplier")
             .prefetch_related("products")
             .all()
         )
@@ -95,3 +95,28 @@ class NetworkNodeHighDebtView(generics.ListAPIView):
         serializer = self.get_serializer(queryset, many=True)
         data = {"average_debt": avg_debt, "nodes": serializer.data}
         return Response(data)
+
+
+@extend_schema(tags=["Network Nodes"])
+class ContactQrView(APIView):
+    def post(self, request, id):
+        email = request.user.email
+
+        if not email:
+            return Response(
+                {"error": "Your email address is not specified"},
+                status=status.HTTP_403_FORBIDDEN,
+            )
+
+        if not NetworkNode.objects.filter(id=id).exists():
+            return Response(
+                {"error": "NetworkNode not found"},
+                status=status.HTTP_404_NOT_FOUND,
+            )
+
+        send_qr_email.delay(email, id)
+
+        return Response(
+            {f"Email with QR is sent to {email}"},
+            status=status.HTTP_200_OK,
+        )

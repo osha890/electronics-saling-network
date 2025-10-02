@@ -33,15 +33,16 @@ class NetworkNodeAdmin(admin.ModelAdmin):
         "type",
         "supplier_link",
         "debt_to_supplier",
-        "get_city",
+        "city",
+        "copy_email_button",
     )
     raw_id_fields = ("supplier",)
-    list_filter = ("contact__address__city",)
+    list_filter = ("city",)
     actions = [clear_debt]
 
     def get_queryset(self, request):
         qs = super().get_queryset(request)
-        qs = qs.select_related("supplier", "contact__address")
+        qs = qs.select_related("supplier")
         return qs
 
     @admin.display(description="Supplier", ordering="supplier__name")
@@ -51,10 +52,14 @@ class NetworkNodeAdmin(admin.ModelAdmin):
             return format_html('<a href="{}">{}</a>', url, obj.supplier.name)
         return "—"
 
-    def get_city(self, obj):
-        try:
-            return obj.contact.address.city
-        except AttributeError:
-            return "—"
+    @admin.display(description="Action")
+    def copy_email_button(self, obj):
+        if obj.email:
+            return format_html(
+                '<button type="button" class="copy-btn" data-email="{}">Copy email</button>',
+                obj.email,
+            )
+        return "No email"
 
-    get_city.short_description = "City"
+    class Media:
+        js = ("network/js/copy_email.js",)

@@ -6,7 +6,7 @@ from products.models import Product
 
 class NetworkNodeFilter(django_filters.FilterSet):
     country = django_filters.CharFilter(
-        field_name="contact__address__country",
+        field_name="country",
         lookup_expr="iexact",
     )
     product = django_filters.ModelChoiceFilter(

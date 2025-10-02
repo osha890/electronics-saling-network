@@ -2,7 +2,6 @@ from django.core.exceptions import ValidationError
 from django.core.validators import MinValueValidator
 from django.db import models
 
-from contacts.models import Contact
 from network.choices import NetworkNodeType
 from products.models import Product
 
@@ -20,12 +19,18 @@ class NetworkNode(models.Model):
 
     type = models.CharField(max_length=20, choices=NetworkNodeType.choices)
 
-    contact = models.OneToOneField(
-        Contact,
-        on_delete=models.SET_NULL,
-        null=True,
-        blank=True,
-    )
+    # contact = models.OneToOneField(
+    #     Contact,
+    #     on_delete=models.SET_NULL,
+    #     null=True,
+    #     blank=True,
+    # )
+
+    email = models.EmailField(null=True, blank=True)
+    country = models.CharField(max_length=100, null=True, blank=True)
+    city = models.CharField(max_length=100, null=True, blank=True)
+    street = models.CharField(max_length=100, null=True, blank=True)
+    house_number = models.CharField(max_length=10, null=True, blank=True)
 
     products = models.ManyToManyField(
         Product,
